@@ -2,8 +2,7 @@
 - name: Install Nginx
   hosts: all
   user: root
-  #handlers: ../hanlders/main.yml
-  #include: ../vars/main.yml
+  include: ../vars/main.yml
   
   tasks:
     - name: add user
@@ -27,11 +26,7 @@
       service: name=nginx enabled=yes
 
     - name: configure nginx vhost
-      template: src=../templates/nginx.conf.j2 dest=/etc/nginx/sites-enabled/{{ item }}.conf
+      template: src=../templates/nginx.conf dest=/etc/nginx/sites-enabled/{{ item }}.conf
       with_items:
-        - ['hamsandwich.com', 'moo.com', 'ansible.com']
-      notify: 
-        - Restart nginx
-
-  handlers:
-    - include: ../handlers/main.yml
+        #- ['hamsandwich.com', 'moo.com', 'ansible.com']
+      notify: Restart Nginx
