@@ -1,0 +1,32 @@
+---
+- name: Install Nginx
+  hosts: all
+  user: root
+  include: ../vars/main.yml
+  
+  tasks:
+    - name: add user
+      user: name=www-data state=present
+
+    - name: Install Nginx on debian
+      apt: pkg=nginx state=present update_cache=yes
+      when: ansible_os_family == 'Debian'
+
+    - name: install nginx on redhat
+      yum: name=nginx state=present
+      when: ansible_os_family == "RedHat"
+
+    - name: create sites-enabled
+      file: path=/etc/nginx/sites-enabled state=directory
+
+    - name: Set nginx to start
+      service: name=nginx state=started
+
+    - name: start nginx
+      service: name=nginx enabled=yes
+
+    - name: configure nginx vhost
+      template: src=../templates/nginx.conf dest=/etc/nginx/sites-enabled/{{ item }}.conf
+      with_items: domains
+        #- ['hamsandwich.com', 'moo.com', 'ansible.com']
+      notify: Restart Nginx

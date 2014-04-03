@@ -1,0 +1,7 @@
+---
+- name: create file play
+  hosts: all
+  user: root
+  tasks:
+    - name: Collect Facts
+		  task: setup

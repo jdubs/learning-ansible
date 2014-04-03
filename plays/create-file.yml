@@ -1,0 +1,7 @@
+---
+- name: create file play
+  hosts: all
+  user: johntrenholm
+  tasks:
+    - name: create the cache directory
+      file: path=/opt/cache state=directory
